@@ -5,6 +5,11 @@ import java.util.Scanner;
 public class Main {
     public static Scanner scanner;
     public static Random rnd;
+
+
+/*------------------------------------------------Functions-------------------------------------------------*/
+
+
     /**
      * orientation check
      * @param flag_Extra is to recognize who is calling the method: the user or the computer
@@ -31,10 +36,10 @@ public class Main {
      * @return boolean flag in order to understand if the cordinations are ok
      */
 
-    public static boolean check_Board_Limits(boolean flag, boolean flag_Extra, int x, int y, int n, int m) {//בדיקת חריגת נקודה מהלוח בדיקה מספר 2
+    public static boolean check_Board_Limits(boolean flag, boolean flag_Extra, int x, int y, int n, int m) {
         if (flag)
             return true;
-        else if (!((0< x && x <=n) && (0< y && y <=m))) {//הלכנו על דרך השלילה
+        else if (!((0< x && x <=n) && (0< y && y <=m))) {
             if (flag_Extra) {
                 System.out.println("Illegal tile, try again!");
             }
@@ -106,7 +111,7 @@ public class Main {
      * @return boolean flag in order to understand if the cordinations are ok
      */
     public static boolean check_Overlaps(boolean flag, boolean flag_Extra, String[][] matrix
-            , int x, int y, int size, int orient) {// בדיקה מספר 4 חריגה מהלוח
+            , int x, int y, int size, int orient) {
         if (flag)
             return true;
         if(orient == 0) {
@@ -193,7 +198,7 @@ public class Main {
      * @return boolean flag in order to understand if the cordinations are ok
      */
     public static boolean check_Adjacent(boolean flag,boolean flag_Extra, String[][] matrix, int x, int y
-            , int n, int m, int size, int orient) {//בדיקה מספר 5  סמיכות לגבולות ולאזורים אסורים** לא שלם- המשך של נדב -במידה ואתה משתמשש בטמפלט שלי- לשים לב שזה מערך של סטרינגים ולא צ'ארים ולכן צריך להשתמש בפונקציה equals()
+            , int n, int m, int size, int orient) {
         if (flag)
             return true;
         if (orient == 0) {//horizonal
@@ -209,7 +214,7 @@ public class Main {
             }
         }
         else{
-            for (int i = 0; i<size; i++,x++) {// orien==1
+            for (int i = 0; i<size; i++,x++) {// orient==1
                 flag=adjacent_Helper(matrix,x,y,n,m);;
                 if (flag) {
                     if (flag_Extra) {
@@ -403,6 +408,10 @@ public class Main {
         return matrix;
     }
 
+
+/*---------------------Getting from the user: board size, number of ships and thier sizes and make a histogram from it------------------*/
+
+
     public static void battleshipGame () {
         /** gets form the user the number of raws and cols*/
         System.out.println("Enter the board size");
@@ -431,8 +440,6 @@ public class Main {
             hist_Original[arr1[j + 1]] = arr1[j++];
 
 
-        //זהו לגבי קליטת הצוללות
-        /////////////////////////////////////////////////////////////////////*******
         int[] hist_User = new int[hist_Original.length];
         hist_Making(hist_Original,hist_User);
         int[] hist_User_Copy = new int[hist_Original.length];
@@ -442,8 +449,11 @@ public class Main {
         int[] hist_Computer_Copy = new int[hist_Original.length];
         hist_Making(hist_Original,hist_Computer_Copy);
 
-        /////            פונקציית בדיקות+הצבות ליוזר
-        boolean flag_Extra;/////////הצהרה על פלגים
+
+/*---------------------------------------Placing the ships of the user while checking the terms------------------------------------------*/
+
+
+        boolean flag_Extra;// Declarations of flags
         boolean flag_Computer;
         boolean flag_User;
         boolean good_Point;
@@ -452,30 +462,35 @@ public class Main {
         boolean good_Attack;
         System.out.println("Your current game board:");
         print_Board(matrix_Gussing_User);
-        for (int size = 0; size < hist_User.length; size++) {
+        for (int size = 0; size < hist_User.length; size++) {//Loop for placing the ship of the current size
             while (hist_User_Copy[size] != 0) {
                 System.out.println("Enter location and orientation for battleship of size " + size);
                 flag_User = true;
                 flag_Extra = true;
                 int x = 0, y = 0, orient = 0;
                 while (flag_User) {
-                    String str_2 = scanner.nextLine();//קבלת עוד מחוזרת שפינקו אותנו בה במקום קלט רגיל ונורמלי
-                    String[] S2 = str_2.split(", ");///// יש לשקול להפוך לפונקציה נפרדת שמפרידה לפי פסיק
+                    String str_2 = scanner.nextLine();//Getting a string of (x, y, orientation) from user
+                    String[] S2 = str_2.split(", ");
                     x = Integer.parseInt(S2[0])+1;
                     y = Integer.parseInt(S2[1])+1;
                     orient = Integer.parseInt(S2[2]);
-                    flag_User = check_Orient(flag_Extra, orient);
-                    flag_User = check_Board_Limits(flag_User, flag_Extra, x, y, n, m);
-                    flag_User = check_Board_Limits_Ship(flag_User, flag_Extra,x, y,size, n, m, orient);
-                    flag_User = check_Overlaps(flag_User, flag_Extra, matrix_User, x, y, size, orient);
-                    flag_User = check_Adjacent(flag_User,flag_Extra, matrix_User, x, y, n,m,size, orient);
+                    flag_User = check_Orient(flag_Extra, orient);//Checks if the orient is valid
+                    flag_User = check_Board_Limits(flag_User, flag_Extra, x, y, n, m);//Checks if (x,y) in the board limits
+                    flag_User = check_Board_Limits_Ship(flag_User, flag_Extra,x, y,size, n, m, orient);//Checks if the ship is in the board limits
+                    flag_User = check_Overlaps(flag_User, flag_Extra, matrix_User, x, y, size, orient);//Checks if the ship overlaps another ship
+                    flag_User = check_Adjacent(flag_User,flag_Extra, matrix_User, x, y, n,m,size, orient);//Checks if a ship a adjacent to tnother ship
                 }
                 change_Board(hist_User_Copy, matrix_User, orient, x, y, size);
                 hist_User_Copy[size]--;
                 System.out.println("Your current game board:");
                 print_Board(matrix_User);
             }
-        }/////// קליטת קלט למחשב+בדיקות+הדפסה למחשב
+        }
+
+
+/*---------------------------Placing the ships of the computer in random while checking the same terms like before---------------------------*/
+
+
         for (int size = 0; size < hist_Computer.length; size++) {
             while (hist_Computer_Copy[size] != 0) {
                 int xc = 0, yc = 0, orient_C = 0;
@@ -497,24 +512,29 @@ public class Main {
         }
 
 
+/*----------------------------------------------------------Attacks--------------------------------------------------------------------------*/
 
-/////////////////////////////////////////////////////////////////////////////attacks!
-        int r_c = remainingShips(hist_Computer);
-        int r_u = remainingShips(hist_User);
-        while (r_c>0 && r_u>0) {
+
+
+/*-----------------------------------------------------------------User attack point*/
+
+
+        int r_c = remainingShips(hist_Computer);//Remaining ships of the computer
+        int r_u = remainingShips(hist_User);//Remaining ships of the user
+        while (r_c>0 && r_u>0) {//Play the rounds until one of the players have no ships left
             System.out.println("Your current guessing board:");
             print_Board(matrix_Gussing_User);
             System.out.println("Enter a tile to attack");
             good_Point = true;
-            flag_Extra = true;/////בן אדם שלח את זה ולא מחשב
+            flag_Extra = true;//Marks that its the user who's calling the functions
             int x = 0, y = 0;
-            while (good_Point) {// !!!בדיקת קלט של התקפה
-                String str_3 = scanner.nextLine();
+            while (good_Point) {
+                String str_3 = scanner.nextLine();//Getting a string (x, y) from the user
                 String[] S3 = str_3.split(", ");
                 x = Integer.parseInt(S3[0])+1;
                 y = Integer.parseInt(S3[1])+1;
-                good_Point=good_Attack_Point(flag_Extra, x, y, n, m);
-                if (!good_Point) {
+                good_Point=good_Attack_Point(flag_Extra, x, y, n, m);//Checks if the cordinate is good for attack
+                if (!good_Point) {//Checks if the cordinate is available for attack
                     String cordinations = matrix_Computer[x][y];
                     if (cordinations.equals("X")|| cordinations.equals("V")) {
                         System.out.println("Tile already attacked, try again!");
@@ -524,59 +544,76 @@ public class Main {
             }
             computer_Attack = false;
             user_Attack = true;
-            /////// ההתקפות/////////////////////////////////////////////////////////////
-            if (matrix_Computer[x][y].equals("–")) {
+
+
+/*-----------------------------------------------------------------User attack*/
+
+
+            if (matrix_Computer[x][y].equals("–")) {//Result if the user misses
                 System.out.println("That is a miss!");
                 matrix_Computer[x][y] = "X";
                 matrix_Gussing_User[x][y] = "X";
             }
-            if (matrix_Computer[x][y].equals("#")) {
+            if (matrix_Computer[x][y].equals("#")) {//Result if the user hits
                 System.out.println("That is a hit!");
                 matrix_Gussing_User[x][y] = "V";
                 matrix_Computer[x][y] = "V";
-                check_If_Drowned(matrix_Computer, n, m, x, y, hist_Computer, "X", user_Attack);
+                check_If_Drowned(matrix_Computer, n, m, x, y, hist_Computer, "X", user_Attack);//Check if the user sinked a ship in the attack
             }
-            r_c = remainingShips(hist_Computer);
+            r_c = remainingShips(hist_Computer);//Check if the user drowned all the computer's ships for winning
             if (r_c == 0) {
                 System.out.println("You won the game!");
                 return;
             }
-            good_Attack = true;///////משתנה בוליאני-פלאג להתקפות המחשב
-            flag_Extra= false;
-            while (good_Attack) {// !!!בדיקת קלט של התקפה
+
+/*------------------------------------------------------------Computer attack point*/
+
+
+            good_Attack = true;//A flag to check if the given cordinate is good for attack
+            flag_Extra= false;//Marks that its the computer who's calling the functions
+            while (good_Attack) {
                 x = rnd.nextInt(n)+1;
                 y = rnd.nextInt(m)+1;
-                good_Attack = good_Attack_Point(flag_Extra, x, y, n, m);
-                if (!good_Attack) {
+                good_Attack = good_Attack_Point(flag_Extra, x, y, n, m);//Checks if the cordinate is good for attack
+                if (!good_Attack) {//Checks if the cordinate is available for attack
                     String cordinations = matrix_Gussing_Computer[x][y];
                     if (cordinations.equals("X") || cordinations.equals("V")) {
                         good_Attack = true;
                     }
                 }
             }
-            //----------------------------------------------computer attacks
+
+
+/*------------------------------------------------------------Computer attack*/
+
+
             System.out.println("The computer attacked" + " (" + (x-1) + ", " + (y-1) + ")");
-            if (matrix_User[x][y].equals("–")) {
+            if (matrix_User[x][y].equals("–")) {//Result if the computer misses
                 System.out.println("That is a miss!");
                 matrix_Gussing_Computer[x][y] = "X";
                 System.out.println("Your current game board:");
                 print_Board(matrix_User);
             }
-            if (matrix_User[x][y].equals("#")) {
+            if (matrix_User[x][y].equals("#")) {//Result if the computer hits
                 System.out.println("That is a hit!");
                 matrix_User[x][y] = "X";
                 matrix_Gussing_Computer[x][y] = "V";
-                check_If_Drowned(matrix_User, n, m, x, y, hist_User, "", computer_Attack);
+                check_If_Drowned(matrix_User, n, m, x, y, hist_User, "", computer_Attack);//Check if the computer sinked a ship in the attack
                 System.out.println("Your current game board:");
                 print_Board(matrix_User);
             }
-            r_u = remainingShips(hist_User);
+            r_u = remainingShips(hist_User);//Check if the computer drowned all the user's ships for winning
             if (r_u == 0) {
                 System.out.println("You lost ):");
                 return;
             }
         }
     }
+
+
+/*-------------------------------------------------End of Battleships game----------------------------------------------------*/
+
+
     public static void main(String[] args) throws IOException {
         String path = args[0];
         scanner = new Scanner(new File(path));
