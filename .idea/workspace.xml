@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ede92f7-ed87-463c-b185-bb3cb87fc318" name="Changes" comment="">
+    <list default="true" id="0ede92f7-ed87-463c-b185-bb3cb87fc318" name="Changes" comment="מעודכן-">
       <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
@@ -65,6 +65,18 @@
       <option name="presentableId" value="Default" />
       <updated>1681991306837</updated>
     </task>
+    <task id="LOCAL‎-00001" summary="מעודכן-">
+      <created>1682613810884</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL‎-00001" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1682613810884</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="מעודכן-" />
+    <option name="LAST_COMMIT_MESSAGE" value="מעודכן-" />
   </component>
 </project>
