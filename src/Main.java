@@ -546,7 +546,7 @@ public class Main {
             user_Attack = true;
 
 
-/*-----------------------------------------------------------------User attack*/
+/*--------------------------------------------------------------------User attack*/
 
 
             if (matrix_Computer[x][y].equals("–")) {//Result if the user misses
@@ -566,7 +566,7 @@ public class Main {
                 return;
             }
 
-/*------------------------------------------------------------Computer attack point*/
+/*----------------------------------------------------------Computer attack point*/
 
 
             good_Attack = true;//A flag to check if the given cordinate is good for attack
@@ -584,7 +584,7 @@ public class Main {
             }
 
 
-/*------------------------------------------------------------Computer attack*/
+/*---------------------------------------------------------------Computer attack*/
 
 
             System.out.println("The computer attacked" + " (" + (x-1) + ", " + (y-1) + ")");
